@@ -41,29 +41,11 @@ extends Thread {
 			
 			String[] split = text.split("195727");
 			System.out.println(split[0] + " " + split[1]);
-			if(split[0].equals("ID")) {
-				m_ID = split[1];
-				Server.clientIDs.set(position, m_ID);
-				
-				System.out.println(m_ID + " entered the server");
-				for(int i = 0; i < 4; i++) {
-					Server.clientFilled.get(i).println(m_ID + " entered the server");
-					Server.clientFilled.get(i).flush();
-				}
-				continue;
-			}
-			else if(split[0].equals("pos")) {
-				position = Integer.parseInt(split[1]);
-				continue;
-			}
-			else {
-				for(int i = 0; i < Server.clientFilled.size(); i++) {
-					Server.clientFilled.get(i).println(m_ID + "> " + text);
-					Server.clientFilled.get(i).flush();
-				}
-			}
-		}
 			
+						
+			
+			}
+						
 			Server.clientFilled.remove(writer);
 			System.out.println("current connection:" + Server.clientFilled.size());
 			for(int i = 0; i < Server.clientFilled.size(); i++) {
