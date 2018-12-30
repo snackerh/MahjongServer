@@ -72,7 +72,11 @@ extends Thread {
 						}
 					}
 				}
-			
+				else if(split[0].equals("curr") || split[0].equals("new") || split[0].equals("prev") || split[0].equals("near") || split[0].equals("middle") || split[0].equals("end")){
+					setStatus(text);
+				}
+				
+				
 				for(int i = 0; i < 4; i++) {
 					if (Server.clientFilled.get(i) != null) {
 					Server.clientFilled.get(i).println(m_ID + ">" + text);
@@ -106,6 +110,90 @@ extends Thread {
 			}
 			
 		}
+	}
+	
+	public void setStatus(String msg) {
+		int i2 = 0;
+        System.out.println("msg:" + msg);
+        String[] split = msg.split("195727");
+        
+        if (msg.equals("prev")) {
+        	i2 = 0;
+        	for(int i = 0; i < 4; i++) {
+                if (Server.clientFilled.get(i) != null) {
+                    Server.clientFilled.get(i).println("Server>prev>" + Server.prevStatus);
+                    Server.clientFilled.get(i).flush();
+                }
+            }
+            Server.newStatus = Server.prevStatus;
+            Server.currStatus = Server.prevStatus;
+            System.out.println("far");
+            System.out.println(Server.currStatus);
+            System.out.println(Server.newStatus);
+            System.out.println(Server.nearStatus);
+            System.out.println(Server.prevStatus);
+        } else if (msg.equals("middle")) {
+            for(int i = 0; i < 4; i++) {
+                if (Server.clientFilled.get(i) != null) {
+                    Server.clientFilled.get(i).println("Server>middle>" + Server.newStatus);
+                    Server.clientFilled.get(i).flush();
+                }
+            }
+            Server.currStatus = Server.newStatus;
+            System.out.println("middle");
+            System.out.println(Server.currStatus);
+            System.out.println(Server.newStatus);
+            System.out.println(Server.nearStatus);
+            System.out.println(Server.prevStatus);
+        } else if (msg.equals("near")) {
+        	for(int i = 0; i < 4; i++) {
+                if (Server.clientFilled.get(i) != null) {
+                    Server.clientFilled.get(i).println("Server>near>" + Server.nearStatus);
+                    Server.clientFilled.get(i).flush();
+                }
+            }
+            Server.currStatus = Server.nearStatus;
+            if (Server.newStatus.split("::")[12].equals("new")) {
+                Server.newStatus = Server.prevStatus;
+            }
+            System.out.println("near");
+            System.out.println(Server.currStatus);
+            System.out.println(Server.newStatus);
+            System.out.println(Server.nearStatus);
+            System.out.println(Server.prevStatus);
+        } else {
+        if (split.length == 2 && split[0].equals("curr")) {
+            Server.nearStatus = Server.currStatus;
+            Server.currStatus = split[1];
+            System.out.println("curr");
+            System.out.println(Server.currStatus);
+            System.out.println(Server.newStatus);
+            System.out.println(Server.nearStatus);
+            System.out.println(Server.prevStatus);
+        }
+        if (split.length == 2 && split[0].equals("new")) {
+            Server.prevStatus = Server.newStatus;
+            Server.nearStatus = Server.currStatus;
+            Server.newStatus = split[1];
+            Server.currStatus = split[1];
+            System.out.println("new");
+            System.out.println(Server.currStatus);
+            System.out.println(Server.newStatus);
+            System.out.println(Server.nearStatus);
+            System.out.println(Server.prevStatus);
+        }
+        if (split.length != 2 || split[0].equals("end")) {
+        	Server.prevStatus = Server.newStatus;
+        	Server.nearStatus = Server.currStatus;
+        	Server.newStatus = split[1];
+        	Server.currStatus = split[1];
+        	System.out.println("end");
+        	System.out.println(Server.currStatus);
+        	System.out.println(Server.newStatus);
+        	System.out.println(Server.nearStatus);
+        	System.out.println(Server.prevStatus);
+        	}
+        }
 	}
 }
 
