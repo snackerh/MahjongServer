@@ -41,8 +41,9 @@ extends Thread {
 				}
 			
 				String[] split = text.split("195727");
-				System.out.println(split[0] + " " + split[1]);
-				
+				if(split.length >= 2) {
+					System.out.println(split[0] + " " + split[1]);
+				}
 				if(split[0].equals("pos")) {
 					position = Integer.parseInt(split[1]);
 					
